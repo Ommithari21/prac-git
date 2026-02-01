@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send JSON to Spring Boot</title>
+</head>
+<body>
+<h1>Send User Data</h1>
+<form id="userForm">
+    <label>Name: <input type="text" id="name"></label><br>
+    <label>Age: <input type="number" id="age"></label><br>
+    <button type="submit">Submit</button>
+</form>
+
+<h3>Response:</h3>
+<pre id="response"></pre>
+
+<script>
+    const form = document.getElementById("userForm");
+    const responseBox = document.getElementById("response");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault(); // stop page reload
+
+      const name = document.getElementById("name").value;
+      const age = parseInt(document.getElementById("age").value);
+
+      const data = {
+        name: name,
+        age: age
+      };
+
+      const response = await fetch("/demo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      responseBox.textContent = JSON.stringify(result, null, 2);
+    });
+</script>
+</body>
+</html>
